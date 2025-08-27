@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import { Database } from 'lucide-react'
@@ -11,8 +11,25 @@ import Community from './pages/Community'
 import RemoveBackground from './pages/RemoveBackground'
 import RemoveObject from './pages/RemoveObject'
 import ReviewResume from './pages/ReviewResume'
+import { useAuth } from '@clerk/clerk-react'
 
 const App = () => {
+
+  const {getToken} = useAuth()
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const token = await getToken();
+        console.log("Clerk Token:", token);
+      } catch (err) {
+        console.error("Error fetching token:", err);
+      }
+    };
+
+    fetchToken();
+  }, [getToken]);
+
   return (
     <div>
       <Routes>
