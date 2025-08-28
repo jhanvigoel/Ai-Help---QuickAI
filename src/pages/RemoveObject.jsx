@@ -1,12 +1,47 @@
 import { useState } from 'react'
-import { Sparkles, Scissors } from 'lucide-react'
+import { Sparkles, Scissors, Loader2 } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 const RemoveObject = () => {
   const [input, setInput] = useState('')
   const [object, setObject] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [output, setOutput] = useState(null)
 
   const OnSubmitHandler = async (e) => {
     e.preventDefault()
+
+    if (!input || !object) {
+      toast.error("Please upload an image and describe the object.")
+      return
+    }
+
+    try {
+      setLoading(true)
+      setOutput(null)
+
+      const formData = new FormData()
+      formData.append("file", input)
+      formData.append("object", object)
+
+      // 🔗 API endpoint (update this if your backend route is different)
+      const res = await fetch("/api/ai/remove-object", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!res.ok) throw new Error("Failed to process image")
+
+      const data = await res.json()
+      setOutput(data?.url) // assuming API returns { url: "processedImageLink" }
+
+      toast.success("Object removed successfully!")
+    } catch (err) {
+      console.error(err)
+      toast.error("Something went wrong. Try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -53,10 +88,11 @@ const RemoveObject = () => {
         {/* Button */}
         <button
           type="submit"
-          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#417DF6] to-[#8E37EB] rounded-lg hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#417DF6] to-[#8E37EB] rounded-lg hover:opacity-90 transition disabled:opacity-50"
         >
-          <Scissors className="w-4 h-4" />
-          Remove Object
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Scissors className="w-4 h-4" />}
+          {loading ? "Processing..." : "Remove Object"}
         </button>
       </form>
 
@@ -67,15 +103,28 @@ const RemoveObject = () => {
           <h1 className="text-lg font-semibold">Processed Image</h1>
         </div>
 
-        {/* Placeholder */}
+        {/* Output */}
         <div className="flex-1 flex items-center justify-center text-center text-gray-400">
-          <div>
-            <Scissors className="w-10 h-10 mx-auto mb-3" />
-            <p>
-              Upload an image, enter an <span className="font-medium">object name</span>, and click 
-              <span className="font-medium"> "Remove Object"</span> to get started
-            </p>
-          </div>
+          {loading ? (
+            <div className="flex flex-col items-center gap-2">
+              <Loader2 className="w-10 h-10 animate-spin text-[#4A7AFF]" />
+              <p className="text-sm text-gray-500">Removing object...</p>
+            </div>
+          ) : output ? (
+            <img 
+              src={output} 
+              alt="Processed result" 
+              className="max-h-[350px] rounded-lg shadow-md border"
+            />
+          ) : (
+            <div>
+              <Scissors className="w-10 h-10 mx-auto mb-3" />
+              <p>
+                Upload an image, enter an <span className="font-medium">object name</span>, and click 
+                <span className="font-medium"> "Remove Object"</span> to get started
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

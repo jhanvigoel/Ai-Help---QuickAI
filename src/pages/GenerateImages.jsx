@@ -1,13 +1,36 @@
 import { Image, Sparkles } from 'lucide-react'
 import React, { useState } from 'react'
+import axios from 'axios'
 
 const GenerateImage = () => {
   const [prompt, setPrompt] = useState('')
   const [size, setSize] = useState('512x512')
+  const [imageUrl, setImageUrl] = useState(null)
+  const [loading, setLoading] = useState(false)
   const sizes = ['256x256', '512x512', '1024x1024']
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
+    if (!prompt) return
+
+    try {
+      setLoading(true)
+      setImageUrl(null)
+
+      // Call your backend API
+      const { data } = await axios.post('/api/ai/generate-image', {
+        prompt,
+        size,
+      })
+
+      // Assuming backend returns { url: "generated_image_url" }
+      setImageUrl(data.url)
+    } catch (err) {
+      console.error('Image generation failed:', err)
+      alert('Something went wrong while generating image.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -60,10 +83,17 @@ const GenerateImage = () => {
         {/* Generate Button */}
         <button
           type="submit"
-          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg hover:opacity-90 transition disabled:opacity-50"
         >
-          <Image className="w-4 h-4" />
-          Generate Image
+          {loading ? (
+            <span>Generating...</span>
+          ) : (
+            <>
+              <Image className="w-4 h-4" />
+              Generate Image
+            </>
+          )}
         </button>
       </form>
 
@@ -74,11 +104,23 @@ const GenerateImage = () => {
           <h1 className="text-lg font-semibold">Generated Image</h1>
         </div>
 
-        <div className="flex-1 flex items-center justify-center text-center text-gray-400">
-          <div>
-            <Image className="w-10 h-10 mx-auto mb-3" />
-            <p>Enter a prompt and click <span className="font-medium">"Generate Image"</span> to get started</p>
-          </div>
+        <div className="flex-1 flex items-center justify-center">
+          {loading ? (
+            <p className="text-gray-500">Generating image...</p>
+          ) : imageUrl ? (
+            <img 
+              src={imageUrl} 
+              alt="Generated" 
+              className="max-w-full max-h-[350px] rounded-lg border"
+            />
+          ) : (
+            <div className="text-center text-gray-400">
+              <Image className="w-10 h-10 mx-auto mb-3" />
+              <p>
+                Enter a prompt and click <span className="font-medium">"Generate Image"</span> to get started
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

@@ -15,21 +15,6 @@ import { useAuth } from '@clerk/clerk-react'
 
 const App = () => {
 
-  const {getToken} = useAuth()
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const token = await getToken();
-        console.log("Clerk Token:", token);
-      } catch (err) {
-        console.error("Error fetching token:", err);
-      }
-    };
-
-    fetchToken();
-  }, [getToken]);
-
   return (
     <div>
       <Routes>

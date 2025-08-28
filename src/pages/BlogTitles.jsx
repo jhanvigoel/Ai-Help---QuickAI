@@ -1,15 +1,35 @@
 import { Sparkles, FileText } from 'lucide-react'
 import React, { useState } from 'react'
+import axios from 'axios'
 
 const BlogTitles = () => {
   const [input, setInput] = useState('')
   const [tone, setTone] = useState('Casual')
+  const [loading, setLoading] = useState(false)
+  const [titles, setTitles] = useState([])
 
   const tones = ['Casual', 'Professional', 'Funny', 'Inspirational']
 
   const OnSubmitHandler = async (e) => {
     e.preventDefault()
-    // Handle blog title generation logic
+    if (!input.trim()) return
+
+    try {
+      setLoading(true)
+      setTitles([])
+
+      // 🔹 API call (replace with your backend route)
+      const res = await axios.post('/api/ai/generate-blog-titles', {
+        topic: input,
+        tone: tone,
+      })
+
+      setTitles(res.data.titles) // assuming response looks like { titles: ["..", ".."] }
+    } catch (error) {
+      console.error("Error generating blog titles:", error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -62,10 +82,11 @@ const BlogTitles = () => {
         {/* Generate Button */}
         <button
           type="submit"
-          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg hover:opacity-90 transition disabled:opacity-50"
         >
           <FileText className="w-4 h-4" />
-          Generate Blog Titles
+          {loading ? "Generating..." : "Generate Blog Titles"}
         </button>
       </form>
 
@@ -76,11 +97,27 @@ const BlogTitles = () => {
           <h1 className="text-lg font-semibold">Generated Blog Titles</h1>
         </div>
 
-        <div className="flex-1 flex items-center justify-center text-center text-gray-400">
-          <div>
-            <FileText className="w-10 h-10 mx-auto mb-3" />
-            <p>Enter a topic and click <span className="font-medium">"Generate Blog Titles"</span> to get started</p>
-          </div>
+        <div className="flex-1 mt-4 overflow-y-auto">
+          {loading ? (
+            <p className="text-center text-gray-400">⏳ Generating titles...</p>
+          ) : titles.length > 0 ? (
+            <ul className="list-disc list-inside space-y-2 text-gray-700">
+              {titles.map((title, i) => (
+                <li key={i}>{title}</li>
+              ))}
+            </ul>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-center text-gray-400">
+              <div>
+                <FileText className="w-10 h-10 mx-auto mb-3" />
+                <p>
+                  Enter a topic and click{" "}
+                  <span className="font-medium">"Generate Blog Titles"</span> to
+                  get started
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
