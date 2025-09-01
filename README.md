@@ -1,3 +1,88 @@
+🚀 QuickAI – AI Help
+
+QuickAI is a full-stack AI-powered web application built with React (frontend) and Express (backend). It integrates Clerk for authentication and Google Gemini (Generative AI) for content generation, along with additional AI services for image editing and resume review.
+
+⚠️ Note: This project is not hosted online. You must run both the frontend and backend locally on your machine.
+
+✨ Features
+
+🔑 User Authentication with Clerk
+
+💡 AI Article & Blog Title Generator (Gemini API)
+
+🎨 AI Image Tools – image generation, background/object removal
+
+📄 AI Resume Review & Suggestions
+
+📊 Usage Tracking with free & premium upgrade logic
+
+🛠️ Getting Started
+Prerequisites
+
+Node.js + npm
+
+PostgreSQL database (NeonDB recommended)
+
+Clerk account & API keys
+
+Gemini API key
+
+Cloudinary account & API key
+
+⚡ Setup Instructions
+
+Clone the repository:
+
+git clone https://github.com/jhanvigoel/Ai-Help---QuickAI.git
+cd Ai-Help---QuickAI
+
+
+Install dependencies for frontend and backend:
+
+cd "Ai Help"
+npm install
+cd server
+npm install
+
+
+Create a .env file in the server folder:
+
+DATABASE_URL=your_postgres_url
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+GEMINI_APIKEY=your_gemini_api_key
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+USE_AUTH=false   # for local development
+
+
+Start the backend:
+
+cd server
+npm start
+# or
+npm run server
+
+
+Start the frontend:
+
+cd ..
+npm run dev
+
+
+Open in your browser:
+
+Backend → http://localhost:3000
+
+Frontend → usually http://localhost:5173
+
+📌 Notes
+
+All API calls are handled through the local backend.
+
+Ensure valid API keys & environment variables are set.
+
+Clerk authentication requires a valid session token (can be bypassed locally using USE_AUTH=false).
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
