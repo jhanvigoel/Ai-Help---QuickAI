@@ -19,25 +19,25 @@ QuickAI is a full-stack AI-powered web application built with React (frontend) a
 🛠️ Getting Started
 Prerequisites
 
-Node.js + npm
+1) Node.js + npm
 
-PostgreSQL database (NeonDB recommended)
+2) PostgreSQL database (NeonDB recommended)
 
-Clerk account & API keys
+3) Clerk account & API keys
 
-Gemini API key
+4) Gemini API key
 
-Cloudinary account & API key
+5) Cloudinary account & API key
 
 ⚡ Setup Instructions
 
-Clone the repository:
+1) Clone the repository:
 
 git clone https://github.com/jhanvigoel/Ai-Help---QuickAI.git
 cd Ai-Help---QuickAI
 
 
-Install dependencies for frontend and backend:
+2) Install dependencies for frontend and backend:
 
 cd "Ai Help"
 npm install
@@ -45,7 +45,7 @@ cd server
 npm install
 
 
-Create a .env file in the server folder:
+3) Create a .env file in the server folder:
 
 DATABASE_URL=your_postgres_url
 CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
@@ -55,7 +55,7 @@ CLOUDINARY_API_KEY=your_cloudinary_api_key
 USE_AUTH=false   # for local development
 
 
-Start the backend:
+4) Start the backend:
 
 cd server
 npm start
@@ -63,13 +63,13 @@ npm start
 npm run server
 
 
-Start the frontend:
+5) Start the frontend:
 
 cd ..
 npm run dev
 
 
-Open in your browser:
+6) Open in your browser:
 
 Backend → http://localhost:3000
 
