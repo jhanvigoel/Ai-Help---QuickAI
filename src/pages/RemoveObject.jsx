@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sparkles, Scissors, Loader2 } from 'lucide-react'
+import { Sparkles, Scissors, Loader2, Download } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const RemoveObject = () => {
@@ -21,24 +21,38 @@ const RemoveObject = () => {
       setOutput(null)
 
       const formData = new FormData()
-      formData.append("file", input)
+      formData.append("image", input) // Changed from "file" to "image" to match multer config
       formData.append("object", object)
 
+      console.log('Sending image for object removal...');
+      
       // 🔗 API endpoint (update this if your backend route is different)
-      const res = await fetch("/api/ai/remove-object", {
+      const res = await fetch("http://localhost:3000/api/ai/remove-image-object", {
         method: "POST",
         body: formData,
       })
 
-      if (!res.ok) throw new Error("Failed to process image")
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to process image");
+      }
 
       const data = await res.json()
-      setOutput(data?.url) // assuming API returns { url: "processedImageLink" }
-
-      toast.success("Object removed successfully!")
+      console.log('Response received:', data);
+      
+      if (data.success) {
+        setOutput(data.url || data.content) // Handle both response formats
+        toast.success("Object removed successfully!")
+      } else {
+        toast.error(data.message || "Failed to process image")
+      }
     } catch (err) {
-      console.error(err)
-      toast.error("Something went wrong. Try again.")
+      console.error('Object removal error:', err);
+      if (err.message) {
+        toast.error(err.message);
+      } else {
+        toast.error("Something went wrong. Try again.")
+      }
     } finally {
       setLoading(false)
     }
@@ -111,11 +125,21 @@ const RemoveObject = () => {
               <p className="text-sm text-gray-500">Removing object...</p>
             </div>
           ) : output ? (
-            <img 
-              src={output} 
-              alt="Processed result" 
-              className="max-h-[350px] rounded-lg shadow-md border"
-            />
+            <div className="flex flex-col items-center gap-4">
+              <img 
+                src={output} 
+                alt="Processed result" 
+                className="max-h-[300px] rounded-lg shadow-md border"
+              />
+              <a
+                href={output}
+                download="processed-image.png"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:opacity-90 transition"
+              >
+                <Download className="w-4 h-4" />
+                Download Image
+              </a>
+            </div>
           ) : (
             <div>
               <Scissors className="w-10 h-10 mx-auto mb-3" />

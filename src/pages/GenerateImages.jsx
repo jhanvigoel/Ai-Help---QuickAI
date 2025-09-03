@@ -18,16 +18,27 @@ const GenerateImage = () => {
       setImageUrl(null)
 
       // Call your backend API
-      const { data } = await axios.post('/api/ai/generate-image', {
+      const { data } = await axios.post('http://localhost:3000/api/ai/generate-image', {
         prompt,
-        size,
+        publish: false // or true if you want to publish
       })
 
-      // Assuming backend returns { url: "generated_image_url" }
-      setImageUrl(data.url)
+      // Backend returns { success, content }
+      if (data.success && data.content) {
+        setImageUrl(data.content)
+      } else {
+        console.error('Image generation failed:', data.message);
+        alert(data.message || 'Image generation failed.')
+      }
     } catch (err) {
       console.error('Image generation failed:', err)
-      alert('Something went wrong while generating image.')
+      if (err.response) {
+        alert(err.response.data?.message || 'Server error occurred')
+      } else if (err.request) {
+        alert('Unable to connect to server. Please check your connection.')
+      } else {
+        alert('Something went wrong while generating image.')
+      }
     } finally {
       setLoading(false)
     }

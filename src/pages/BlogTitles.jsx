@@ -18,17 +18,29 @@ const BlogTitles = () => {
       setLoading(true)
       setTitles([])
 
-      // 🔹 API call (replace with your backend route)
-      const res = await axios.post('/api/ai/generate-blog-titles', {
-        topic: input,
+      // 🔹 API call (use full backend URL)
+      const res = await axios.post('http://localhost:3000/api/ai/generate-blog-title', {
+        prompt: input,
         tone: tone,
       })
 
-      setTitles(res.data.titles) // assuming response looks like { titles: ["..", ".."] }
+      console.log('Blog title response:', res.data);
+      // Defensive: handle cases where titles is missing or not an array
+      if (Array.isArray(res.data.titles)) {
+        setTitles(res.data.titles);
+      } else if (typeof res.data.titles === 'string') {
+        setTitles([res.data.titles]);
+      } else {
+        setTitles([]);
+        if (res.data.message) {
+          alert('Error: ' + res.data.message);
+        }
+      }
     } catch (error) {
-      console.error("Error generating blog titles:", error)
+      console.error("Error generating blog titles:", error);
+      alert('An error occurred while generating blog titles. See console for details.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 

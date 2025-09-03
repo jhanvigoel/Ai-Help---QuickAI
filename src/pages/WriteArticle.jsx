@@ -5,7 +5,7 @@ import { useAuth } from '@clerk/clerk-react'
 import toast from 'react-hot-toast'
 import Markdown from 'react-markdown'
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
 
 const WriteArticle = () => {
   const articleLength = [
@@ -25,21 +25,35 @@ const WriteArticle = () => {
     e.preventDefault()
     try {
       setLoading(true)
-      const prompt = `Write an article about ${input} in ${selectedLength.text}`
+      const prompt = input;
+
+      console.log('Sending request with:', { prompt, length: selectedLength.length });
 
       const { data } = await axios.post(
-        '/api/ai/generate-article',
+        'http://localhost:3000/api/ai/generate-article',
         { prompt, length: selectedLength.length },
-        { headers: { Authorization: `Bearer ${await getToken()}` } }
-      )
+        {
+          headers: { Authorization: `Bearer ${await getToken()}` }
+        }
+      );
+
+      console.log('Response received:', data);
 
       if (data.success) {
         setContent(data.content)
+        toast.success('Article generated successfully!')
       } else {
-        toast.error(data.message)
+        toast.error(data.message || 'Failed to generate article')
       }
     } catch (error) {
-      toast.error(error.message)
+      console.error('Error generating article:', error);
+      if (error.response) {
+        toast.error(error.response.data?.message || 'Server error occurred')
+      } else if (error.request) {
+        toast.error('Unable to connect to server. Please check your connection.')
+      } else {
+        toast.error(error.message || 'An unexpected error occurred')
+      }
     }
     setLoading(false)
   }

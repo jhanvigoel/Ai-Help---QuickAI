@@ -21,6 +21,39 @@ app.get('/', (req, res) => {
   res.send("Server is running");
 });
 
+app.get('/api/test', (req, res) => {
+  res.json({ success: true, message: "API is working", timestamp: new Date().toISOString() });
+});
+
+app.get('/api/test-ai', async (req, res) => {
+  try {
+    const OpenAI = (await import('openai')).default;
+    const AI = new OpenAI({
+      apiKey: process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY,
+      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+    });
+
+    const response = await AI.chat.completions.create({
+      model: "gemini-2.0-flash",
+      messages: [{ role: "user", content: "Say hello" }],
+      temperature: 0.7,
+      max_tokens: 50,
+    });
+
+    res.json({ 
+      success: true, 
+      message: "AI API is working", 
+      response: response.choices[0].message.content 
+    });
+  } catch (error) {
+    res.json({ 
+      success: false, 
+      message: "AI API error", 
+      error: error.message 
+    });
+  }
+});
+
 //app.use(requireAuth());
 
 app.use('/api/ai',aiRouter)

@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 const RemoveBackground = () => {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const OnSubmitHandler = async (e) => {
     e.preventDefault()
@@ -15,18 +16,37 @@ const RemoveBackground = () => {
       return
     }
 
+    setLoading(true)
+    setOutput('')
+
     const formData = new FormData()
-    formData.append("file", input)
+    formData.append("image", input) // Changed from "file" to "image" to match multer config
 
     try {
-      const res = await axios.post("http://localhost:5000/api/ai/remove-bg", formData, {
+      console.log('Sending image for background removal...');
+      const res = await axios.post("http://localhost:3000/api/ai/remove-image-background", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       })
-      setOutput(res.data.image) // backend should return processed image URL/base64
-      toast.success("Background removed successfully")
+      
+      console.log('Response received:', res.data);
+      
+      if (res.data.success) {
+        setOutput(res.data.content || res.data.image) // Handle both response formats
+        toast.success("Background removed successfully")
+      } else {
+        toast.error(res.data.message || "Failed to process image")
+      }
     } catch (err) {
-      console.error(err)
-      toast.error("Failed to process image")
+      console.error('Background removal error:', err);
+      if (err.response) {
+        toast.error(err.response.data?.message || 'Server error occurred')
+      } else if (err.request) {
+        toast.error('Unable to connect to server. Please check your connection.')
+      } else {
+        toast.error('Failed to process image')
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -61,10 +81,15 @@ const RemoveBackground = () => {
         {/* Button */}
         <button
           type="submit"
-          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#F6AB41] to-[#FF4938] rounded-lg hover:opacity-90 transition"
+          disabled={loading}
+          className="w-full mt-8 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#F6AB41] to-[#FF4938] rounded-lg hover:opacity-90 transition disabled:opacity-50"
         >
-          <Eraser className="w-4 h-4" />
-          Remove Background
+          {loading ? (
+            <span className="w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin"></span>
+          ) : (
+            <Eraser className="w-4 h-4" />
+          )}
+          {loading ? 'Processing...' : 'Remove Background'}
         </button>
       </form>
 
@@ -76,7 +101,14 @@ const RemoveBackground = () => {
         </div>
 
         {/* If output image available */}
-        {output ? (
+        {loading ? (
+          <div className="flex-1 flex items-center justify-center text-center text-gray-500">
+            <div>
+              <div className="w-10 h-10 mx-auto mb-3 rounded-full border-4 border-orange-500 border-t-transparent animate-spin"></div>
+              <p>Processing image...</p>
+            </div>
+          </div>
+        ) : output ? (
           <div className="flex-1 flex flex-col items-center justify-center mt-6">
             <img src={output} alt="Processed" className="max-h-[300px] rounded-lg border" />
             <a

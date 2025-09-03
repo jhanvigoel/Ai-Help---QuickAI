@@ -8,7 +8,7 @@ const Testimonial = () => {
             <p className="text-center text-gray-500 mt-1">
                 We have collected some testimonials from our users. They are real people who have used our product.
             </p>
-            < div className="flex flex-wrap items-center justify-center gap-6 mt-12">
+            <div className="flex flex-wrap items-center justify-center gap-6 mt-12">
             <div className="text-sm w-80 border border-gray-200 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5 overflow-hidden">
                 <div className="flex items-center gap-4 px-5 py-4 bg-red-500/10">
                     <img className="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100" alt="userImage1" />
