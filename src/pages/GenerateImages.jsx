@@ -18,7 +18,7 @@ const GenerateImage = () => {
       setImageUrl(null)
 
       // Call your backend API
-      const { data } = await axios.post('http://localhost:3000/api/ai/generate-image', {
+      const { data } = await axios.post('/api/ai/generate-image', {
         prompt,
         publish: false // or true if you want to publish
       })

@@ -24,7 +24,7 @@ const RemoveBackground = () => {
 
     try {
       console.log('Sending image for background removal...');
-      const res = await axios.post("http://localhost:3000/api/ai/remove-image-background", formData, {
+      const res = await axios.post("/api/ai/remove-image-background", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       })
       

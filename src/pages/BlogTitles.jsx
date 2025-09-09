@@ -19,7 +19,7 @@ const BlogTitles = () => {
       setTitles([])
 
       // 🔹 API call (use full backend URL)
-      const res = await axios.post('http://localhost:3000/api/ai/generate-blog-title', {
+      const res = await axios.post('/api/ai/generate-blog-title', {
         prompt: input,
         tone: tone,
       })

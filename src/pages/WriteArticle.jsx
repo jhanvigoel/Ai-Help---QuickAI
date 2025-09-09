@@ -30,7 +30,7 @@ const WriteArticle = () => {
       console.log('Sending request with:', { prompt, length: selectedLength.length });
 
       const { data } = await axios.post(
-        'http://localhost:3000/api/ai/generate-article',
+        '/api/ai/generate-article',
         { prompt, length: selectedLength.length },
         {
           headers: { Authorization: `Bearer ${await getToken()}` }

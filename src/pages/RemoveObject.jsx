@@ -27,7 +27,7 @@ const RemoveObject = () => {
       console.log('Sending image for object removal...');
       
       // 🔗 API endpoint (update this if your backend route is different)
-      const res = await fetch("http://localhost:3000/api/ai/remove-image-object", {
+      const res = await fetch("/api/ai/remove-image-object", {
         method: "POST",
         body: formData,
       })
