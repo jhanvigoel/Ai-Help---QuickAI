@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import Creations from '../components/Creations'
 
 // ✅ Set axios base URL
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const Dashboard = () => {
   const [creations, setCreations] = useState([])
