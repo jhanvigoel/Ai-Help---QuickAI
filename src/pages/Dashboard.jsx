@@ -5,7 +5,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Creations from '../components/Creations'
 
-// ✅ Set axios base URL
+
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const Dashboard = () => {
@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
   const { getToken } = useAuth()
 
-  // ✅ Fetch dashboard data
+  
   const getDashboardData = async () => {
     try {
       const { data } = await axios.get('/api/user/get-user-creations', {
@@ -37,7 +37,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
 
-      {/* 🔹 Total Creations Card */}
+      
       <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold text-gray-800">Total Creations</h1>
@@ -48,7 +48,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* 🔹 Active Plan Card */}
       <div className="max-w-md mx-auto mt-6 bg-white shadow-lg rounded-2xl p-6 flex items-center justify-between">
         <div>
           <h1 className="text-lg font-semibold text-gray-800">Active Plan</h1>
@@ -61,7 +60,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* 🔹 Recent Creations */}
+      
       <div className="max-w-3xl mx-auto mt-8 bg-white shadow-md rounded-xl p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Creations</h2>
 

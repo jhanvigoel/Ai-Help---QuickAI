@@ -60,7 +60,7 @@ const WriteArticle = () => {
 
   return (
     <div className="h-screen p-6 flex flex-col md:flex-row gap-6 bg-gray-50">
-      {/* Left column (form) */}
+      
       <form
         onSubmit={OnSubmitHandler}
         className="flex-1 p-6 bg-white shadow-md rounded-2xl border"
@@ -116,7 +116,7 @@ const WriteArticle = () => {
         </button>
       </form>
 
-      {/* Right column (output) */}
+      
       <div className="flex-1 p-6 bg-white shadow-md rounded-2xl border min-h-[400px] flex flex-col">
         <div className="flex items-center gap-2">
           <Edit className="w-5 h-5 text-blue-600" />

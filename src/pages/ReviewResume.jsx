@@ -42,7 +42,7 @@ const ReviewResume = () => {
   return (
     <div className="h-screen p-6 flex flex-col md:flex-row gap-6 bg-gray-50">
       
-      {/* Left Column */}
+      
       <form 
         onSubmit={OnSubmitHandler} 
         className="flex-1 p-6 bg-white shadow-md rounded-2xl border"
@@ -52,7 +52,7 @@ const ReviewResume = () => {
           <h1 className="text-lg font-semibold">Resume Review</h1>
         </div>
 
-        {/* Upload Input */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Upload Resume
         </label>
@@ -67,7 +67,7 @@ const ReviewResume = () => {
           Supports PDF Resume Only.
         </p>
 
-        {/* Button */}
+
         <button
           type="submit"
           disabled={loading}
@@ -82,14 +82,14 @@ const ReviewResume = () => {
         </button>
       </form>
 
-      {/* Right Column */}
+      
       <div className="flex-1 p-6 bg-white shadow-md rounded-2xl border min-h-[400px] flex flex-col">
         <div className="flex items-center gap-2">
           <FileText className="w-5 h-5 text-[#00DA83]" />
           <h1 className="text-lg font-semibold">Analysis Results</h1>
         </div>
 
-        {/* Results */}
+       
         {!content ? (
           <div className="flex-1 flex items-center justify-center text-center text-gray-400">
             <div>

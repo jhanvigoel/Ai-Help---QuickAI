@@ -21,12 +21,12 @@ const RemoveObject = () => {
       setOutput(null)
 
       const formData = new FormData()
-      formData.append("image", input) // Changed from "file" to "image" to match multer config
+      formData.append("image", input) 
       formData.append("object", object)
 
       console.log('Sending image for object removal...');
       
-      // 🔗 API endpoint (update this if your backend route is different)
+      
       const res = await fetch("/api/ai/remove-image-object", {
         method: "POST",
         body: formData,
@@ -41,7 +41,7 @@ const RemoveObject = () => {
       console.log('Response received:', data);
       
       if (data.success) {
-        setOutput(data.url || data.content) // Handle both response formats
+        setOutput(data.url || data.content) 
         toast.success("Object removed successfully!")
       } else {
         toast.error(data.message || "Failed to process image")
@@ -61,7 +61,7 @@ const RemoveObject = () => {
   return (
     <div className="h-screen p-6 flex flex-col md:flex-row gap-6 bg-gray-50">
       
-      {/* Left Column */}
+      
       <form 
         onSubmit={OnSubmitHandler} 
         className="flex-1 p-6 bg-white shadow-md rounded-2xl border"
@@ -71,7 +71,7 @@ const RemoveObject = () => {
           <h1 className="text-lg font-semibold">Object Removal</h1>
         </div>
 
-        {/* Upload input */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Upload Image
         </label>
@@ -86,7 +86,7 @@ const RemoveObject = () => {
           Supports JPG, PNG, and other formats
         </p>
 
-        {/* Object name */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Describe Object to Remove
         </label>
@@ -99,7 +99,7 @@ const RemoveObject = () => {
           required
         />
 
-        {/* Button */}
+        
         <button
           type="submit"
           disabled={loading}
@@ -110,14 +110,14 @@ const RemoveObject = () => {
         </button>
       </form>
 
-      {/* Right Column */}
+      
       <div className="flex-1 p-6 bg-white shadow-md rounded-2xl border min-h-[400px] flex flex-col">
         <div className="flex items-center gap-2">
           <Scissors className="w-5 h-5 text-[#4A7AFF]" />
           <h1 className="text-lg font-semibold">Processed Image</h1>
         </div>
 
-        {/* Output */}
+        
         <div className="flex-1 flex items-center justify-center text-center text-gray-400">
           {loading ? (
             <div className="flex flex-col items-center gap-2">

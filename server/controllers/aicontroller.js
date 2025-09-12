@@ -51,7 +51,7 @@ try {
   console.log('Article saved to database successfully');
 } catch (dbError) {
   console.error('Database error:', dbError);
-  // Continue with response even if database save fails
+  
 }
 
     if(plan !== 'premium'){
@@ -64,7 +64,7 @@ try {
         console.log('User metadata updated successfully');
       } catch (clerkError) {
         console.error('Clerk error:', clerkError);
-        // Continue with response even if metadata update fails
+        
       }
     }
 
@@ -100,12 +100,12 @@ export const generateBlogTitle = async (req, res) => {
     console.log('Gemini raw response:', response);
     const content = response.choices?.[0]?.message?.content;
     console.log('Gemini content:', content);
-    // Try to split content into array of titles
+    
     let titles = [];
     if (content) {
-      // If Gemini returns numbered or bulleted list, split accordingly
+      
       titles = content.split(/\n|\r|\d+\. |\- /).map(t => t.trim()).filter(t => t.length > 0);
-      // If only one title, wrap in array
+      
       if (titles.length === 0 && content.trim()) {
         titles = [content.trim()];
       }
@@ -180,7 +180,7 @@ export const generateImage = async (req, res) => {
       const imageData = response.data.artifacts[0].base64;
       console.log('Stability AI response received, generating image...');
       
-      // Convert base64 to buffer and upload to Cloudinary
+      
       const imageBuffer = Buffer.from(imageData, 'base64');
       const base64Image = `data:image/png;base64,${imageData}`;
       
@@ -193,14 +193,14 @@ export const generateImage = async (req, res) => {
       return res.json({success:false,message:`Image generation failed: ${stabilityError.response?.data?.message || stabilityError.message}`});
     }
 
-    // Save to database
+    
     try {
       await sql` INSERT INTO creations (user_id, prompt, content, type, publish)
       VALUES  (${userId}, ${prompt}, ${imageUrl}, 'image', ${publish ?? false})`;
       console.log('Image saved to database successfully');
     } catch (dbError) {
       console.error('Database error:', dbError);
-      // Continue with response even if database save fails
+      
     }
 
     res.json({success:true,content:imageUrl});
@@ -241,14 +241,14 @@ export const removeImageBackground = async (req, res) => {
 
     console.log('Background removed successfully:', secure_url);
 
-    // Save to database
+    
     try {
       await sql` INSERT INTO creations (user_id, prompt, content, type)
       VALUES  (${userId}, 'Remove background from image', ${secure_url}, 'image')`;
       console.log('Image saved to database successfully');
     } catch (dbError) {
       console.error('Database error:', dbError);
-      // Continue with response even if database save fails
+      
     }
 
     res.json({success:true,content:secure_url,image:secure_url});
@@ -291,14 +291,14 @@ export const removeImageObject = async (req, res) => {
 
     console.log('Object removed successfully:', imageUrl);
 
-    // Save to database
+    
     try {
       await sql` INSERT INTO creations (user_id, prompt, content, type)
       VALUES  (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image')`;
       console.log('Image saved to database successfully');
     } catch (dbError) {
       console.error('Database error:', dbError);
-      // Continue with response even if database save fails
+      
     }
 
     res.json({success:true,content:imageUrl,url:imageUrl});

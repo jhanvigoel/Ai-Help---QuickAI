@@ -18,14 +18,14 @@ const BlogTitles = () => {
       setLoading(true)
       setTitles([])
 
-      // 🔹 API call (use full backend URL)
+      
       const res = await axios.post('/api/ai/generate-blog-title', {
         prompt: input,
         tone: tone,
       })
 
       console.log('Blog title response:', res.data);
-      // Defensive: handle cases where titles is missing or not an array
+      
       if (Array.isArray(res.data.titles)) {
         setTitles(res.data.titles);
       } else if (typeof res.data.titles === 'string') {
@@ -47,7 +47,7 @@ const BlogTitles = () => {
   return (
     <div className="h-screen p-6 flex flex-col md:flex-row gap-6 bg-gray-50">
       
-      {/* Left: Blog Title Configuration */}
+      
       <form 
         onSubmit={OnSubmitHandler} 
         className="flex-1 p-6 bg-white shadow-md rounded-2xl border"
@@ -57,7 +57,7 @@ const BlogTitles = () => {
           <h1 className="text-lg font-semibold">Blog Title Configuration</h1>
         </div>
 
-        {/* Blog Topic */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Blog Topic
         </label>
@@ -70,7 +70,7 @@ const BlogTitles = () => {
           required
         />
 
-        {/* Tone Selection */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Writing Tone
         </label>
@@ -91,7 +91,7 @@ const BlogTitles = () => {
           ))}
         </div>
 
-        {/* Generate Button */}
+        
         <button
           type="submit"
           disabled={loading}
@@ -102,7 +102,7 @@ const BlogTitles = () => {
         </button>
       </form>
 
-      {/* Right: Generated Titles */}
+      
       <div className="flex-1 p-6 bg-white shadow-md rounded-2xl border min-h-[400px] flex flex-col">
         <div className="flex items-center gap-2">
           <FileText className="w-5 h-5 text-purple-600" />

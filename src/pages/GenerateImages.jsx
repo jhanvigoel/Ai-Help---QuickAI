@@ -17,13 +17,13 @@ const GenerateImage = () => {
       setLoading(true)
       setImageUrl(null)
 
-      // Call your backend API
+      
       const { data } = await axios.post('/api/ai/generate-image', {
         prompt,
-        publish: false // or true if you want to publish
+        publish: false 
       })
 
-      // Backend returns { success, content }
+      
       if (data.success && data.content) {
         setImageUrl(data.content)
       } else {
@@ -47,7 +47,7 @@ const GenerateImage = () => {
   return (
     <div className="h-screen p-6 flex flex-col md:flex-row gap-6 bg-gray-50">
       
-      {/* Left Form */}
+      
       <form 
         onSubmit={onSubmitHandler} 
         className="flex-1 p-6 bg-white shadow-md rounded-2xl border"
@@ -57,7 +57,7 @@ const GenerateImage = () => {
           <h1 className="text-lg font-semibold">Image Configuration</h1>
         </div>
 
-        {/* Prompt Input */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Image Prompt
         </label>
@@ -70,7 +70,7 @@ const GenerateImage = () => {
           required
         />
 
-        {/* Image Size Selection */}
+        
         <label className="block mt-6 text-sm font-medium text-gray-700">
           Image Size
         </label>
@@ -91,7 +91,7 @@ const GenerateImage = () => {
           ))}
         </div>
 
-        {/* Generate Button */}
+        
         <button
           type="submit"
           disabled={loading}
@@ -108,7 +108,7 @@ const GenerateImage = () => {
         </button>
       </form>
 
-      {/* Right Output Preview */}
+      
       <div className="flex-1 p-6 bg-white shadow-md rounded-2xl border min-h-[400px] flex flex-col">
         <div className="flex items-center gap-2">
           <Image className="w-5 h-5 text-blue-600" />
