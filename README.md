@@ -5,15 +5,10 @@ This project is a full-stack AI-powered web application built with React (fronte
 
 ## Features
 - User authentication with Clerk
-- Free and premium usage plans
 - AI-powered article and blog title generation (Gemini API)
 - AI image generation and background/object removal
 - Resume review using AI
 - Usage tracking and premium upgrade logic
-
-## Getting Started
-
-**Note:** This project is not hosted online. You must run both the frontend and backend locally on your machine.
 
 ### Prerequisites
 - Node.js and npm installed
@@ -57,21 +52,3 @@ This project is a full-stack AI-powered web application built with React (fronte
 	npm run dev
 	```
 6. Open your browser and go to `http://localhost:3000` (backend) and the frontend port (usually `http://localhost:5173`).
-
-## Notes
-- All API calls are made to your local backend server.
-- You must have valid API keys and environment variables set up for all integrations.
-- Clerk authentication requires a valid session token for protected routes.
-- For local development, you can bypass Clerk by setting `USE_AUTH=false` in your `.env`.
-
-## License
-This project is for educational and personal use. Not hosted or deployed online.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
